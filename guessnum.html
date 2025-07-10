@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: antiquewhite;
+        }
+
+        #container {
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            top: 180px;
+            /* background: gray; */
+        }
+        #input{
+            height: 30px;
+            width: 300px;
+            border-radius: 10px;
+        }
+        #guess{
+            height: 30px;
+            width: 80px;
+            border-radius: 10px;
+            background: rgb(229, 221, 221);
+        }
+        #main {
+            justify-content: center;
+        }
+        #tryagain{
+            height: 30px;
+            width: 100px;
+            border-radius: 10px;
+            background: rgb(176, 232, 155);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div id="main">
+            <input type="text" placeholder="guess a num" id="input">
+            <p></p>
+            <input type="submit" value="Guess" id="guess">
+            <p id="hint">Let's start</p>
+            <input type="submit" value="Try Again" id="tryagain">
+        </div>
+    </div>
+    <script>
+        let rand = Math.floor(Math.random() * 100)
+        const input=document.getElementById("input")
+        const guess=document.getElementById("guess")
+        const hint=document.getElementById("hint")
+        const tryagain=document.getElementById("tryagain")
+        var num_of_trails=0
+        guess.addEventListener('click',()=>{
+            if (input.value == 0) {
+                hint.innerText="Enter something"
+                return;
+            }
+            if (input.value == rand) {
+                hint.innerText="Won"
+                return;
+            } else if (input.value < rand) {
+                hint.innerText="the number is greater than your guess"
+            } else {
+                hint.innerText="the nummer is smaller than your guess"
+            }
+            console.log(num_of_trails++)
+            if(num_of_trails==5){
+                hint.innerText="Out of moves, Try again"
+                num_of_trails=0;
+                return;
+            }
+            input.value=""
+        })
+
+        tryagain.addEventListener('click',()=>{
+            num_of_trails=0;
+            input.value="";
+            hint.innerText="Let's start"
+        })
+    </script>
+</body>
+
+</html>
