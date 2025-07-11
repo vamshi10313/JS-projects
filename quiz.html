@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #result {
+            display: none;
+            position: absolute;
+            left: 40%;
+            right: 40%;
+            padding: 20px 10px;
+            line-height: 30px;
+            border-radius: 10px;
+            background-color: rgb(170, 194, 194);
+            justify-content: space-between;
+        }
+
+        #container {
+            display: flex;
+            flex-direction: column;
+            background-color: rgb(243, 247, 247);
+            position: absolute;
+            left: 35%;
+            right: 35%;
+            padding: 20px 10px;
+            line-height: 30px;
+            border-radius: 10px;
+        }
+
+
+        #timer {
+            display: inline;
+            text-align: right;
+            margin: 0;
+        }
+
+        #reset {
+            border-radius: 10px;
+        }
+
+        #question {
+            font-weight: 900;
+            padding-left: 20px;
+        }
+
+        #options {
+            padding-left: 20px;
+        }
+
+        #options label {
+            display: block;
+        }
+
+        #options label:hover {
+            background-color: rgb(202, 245, 251);
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <h1 style="text-align: center;">QUIZ</h1>
+        <div id="container">
+            <p id="timer">Time Left: 0 seconds</p>
+            <div id="question"></div>
+            <div class="options" id="options"></div>
+            <button type="submit" id="next" onclick="nexxt()">next</button>
+        </div>
+        <div id="result">
+            Marks : <span id="correct"></span>
+            <button type="reset" id="reset" onclick="reset()">Reset</button>
+        </div>
+    </section>
+    <script>
+
+        const questions = [
+            { q: "Capital of India?", a: 0, o: ["Delhi", "Mumbai", "Chennai", "Kolkata"] },
+            { q: "5 + 5 = ?", a: 1, o: ["9", "10", "11", "8"] },
+            { q: "Largest planet?", a: 2, o: ["Earth", "Mars", "Jupiter", "Venus"] },
+            { q: "Water formula?", a: 0, o: ["H2O", "O2", "CO2", "NaCl"] },
+            { q: "Color of Sun?", a: 3, o: ["Blue", "Red", "Yellow", "White"] },
+            { q: "CPU stands for?", a: 0, o: ["Central Processing Unit", "Power Unit", "Core Unit", "System Unit"] },
+            { q: "First man in space?", a: 2, o: ["Armstrong", "Sharma", "Gagarin", "Aldrin"] },
+            { q: "Taj Mahal in?", a: 2, o: ["Delhi", "Jaipur", "Agra", "Mumbai"] },
+            { q: "How many planets?", a: 0, o: ["8", "9", "10", "7"] },
+            { q: "HTML used for?", a: 1, o: ["Games", "Structure", "Database", "Music"] },
+            { q: "Excel used for?", a: 1, o: ["Video", "Data", "Photos", "Drawing"] },
+            { q: "Primary colors?", a: 1, o: ["Red,Green,Blue", "Red,Blue,Yellow", "Pink,Black,Red", "Green,White,Red"] },
+            { q: "Hyderabad in?", a: 2, o: ["AP", "MP", "TS", "UP"] },
+            { q: "Gravity by?", a: 0, o: ["Newton", "Einstein", "Galileo", "Tesla"] },
+            { q: "Shape of Earth?", a: 3, o: ["Circle", "Oval", "Sphere", "Ellipsoid"] }
+        ];
+        let index = 0, correct = 0, timer, seconds, sec;
+        function loadques() {
+            clearTimeout(seconds);
+            sec = 9;
+            seconds = setInterval(() => {
+                document.getElementById("timer").innerText = `Time Left:  ${sec} seconds`;
+                sec--;
+            }, 1000)
+            setTimeout(function () { clearInterval(seconds) }, 10000)
+            document.getElementById("question").innerHTML = `<div> ${index + 1} . ${questions[index]["q"]}`
+            let options = document.getElementById("options");
+            options.innerHTML = ""
+            questions[index]["o"].forEach((option, i) => {
+                options.innerHTML += `<label>
+                    <input type="radio" name="opt" value="${i}">
+                    <span>${option}</span><br>
+                </label>`;
+            })
+            clearTimeout(timer);
+            timer = setTimeout(nexxt, 10000)
+
+        }
+
+        function nexxt() {
+            clearTimeout(timer);
+            clearTimeout(seconds);
+            sec = 9;
+            seconds = setInterval(() => {
+                document.getElementById("timer").innerText = `Time Left:  ${sec} seconds`;
+                sec--;
+            }, 1000)
+            setTimeout(function () { clearInterval(seconds) }, 10000)
+            const ans = questions[index]["a"];
+            const sel = document.querySelector('input[name="opt"]:checked');
+            if (sel && ans == sel.value) {
+                correct++;
+            } else {
+
+            }
+            index++;
+            if (index >= questions.length) {
+                showres();
+                return;
+            }
+            loadques();
+        }
+        const next = document.getElementById("next");
+
+
+
+        function showres() {
+            document.getElementById("result").style.display = "flex"
+            document.getElementById("container").style.display = "none"
+            document.getElementById("correct").innerHTML = correct + "/" + questions.length
+        }
+        function reset() {
+            index = 0, correct = 0, timer, seconds, sec = 0;
+            document.getElementById("result").style.display = "none"
+            document.getElementById("container").style.display = "flex"
+            window.loadques()
+        }
+        loadques();
+    </script>
+</body>
+
+</html>
